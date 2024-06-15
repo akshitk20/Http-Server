@@ -6,10 +6,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 public class SimpleHttpServer {
-    public static void main(String[] args)  {
+    private int port;
+    public SimpleHttpServer(int port) {
+        this.port = port;
+    }
+    public void start()  {
 
-        try(final ServerSocket server = new ServerSocket(8080)) {
-            System.out.println("Listening for connection on port 8080");
+        try(final ServerSocket server = new ServerSocket(port)) {
+            System.out.println("Listening for connection on port " + port);
             while (true) {
                 try(final Socket client = server.accept()) {
                     // 1. Read HTTP request from the client socket
