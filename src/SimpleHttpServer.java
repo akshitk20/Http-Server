@@ -1,28 +1,37 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class SimpleHttpServer {
     public static void main(String[] args)  {
 
         try(final ServerSocket server = new ServerSocket(8080)) {
             System.out.println("Listening for connection on port 8080");
             while (true) {
-                final Socket client = server.accept();
-                // 1. Read HTTP request from the client socket
-                InputStreamReader isr = new InputStreamReader(client.getInputStream());
-                BufferedReader reader = new BufferedReader(isr);
-                String line = reader.readLine();
-                while (!line.isEmpty()) {
-                    System.out.println(line);
-                    line = reader.readLine();
-                }
-                // 2. Prepare an HTTP response
-                // 3. Send HTTP response to the client
-                // 4. Close the socket
+                try(final Socket client = server.accept()) {
+                    // 1. Read HTTP request from the client socket
+                    InputStreamReader isr = new InputStreamReader(client.getInputStream());
+                    BufferedReader reader = new BufferedReader(isr);
+                    String line = reader.readLine();
+                    while (!line.isEmpty()) {
+                        System.out.println(line);
+                        line = reader.readLine();
+                    }
 
+                    // 2. Prepare an HTTP response
+                    LocalDateTime date = LocalDateTime.now();
+                    String response = "HTTP/1.1 200 OK \r\n\r\n" + date;
+                    System.out.println(response);
+
+                    // 3. Send HTTP response to the client
+                    client.getOutputStream().write(response.getBytes(StandardCharsets.UTF_8));
+                    client.getOutputStream().flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.fillInStackTrace();

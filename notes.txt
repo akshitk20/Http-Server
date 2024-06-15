@@ -1,0 +1,25 @@
+The first step to creating a web server is to create a network socket that can accept connections on a certain TCP port.
+HTTP servers usually listen on port 80 but we will use a different port 8080 for testing purposes.
+You can use ServerSocket class in Java to create a Server which can accept requests, as shown below
+final ServerSocket server = new ServerSocket(8080);
+
+a server that is listening for a connection on port 8080 but we are not doing anything with the incoming connection but we are not rejecting them either.
+All of them are waiting to be served and stored inside the server object.
+
+Do you see the while(true) loop? Any guess why we have that? This allows us to keep our program running, without this infinite loop our program will finish execution and the server will be shut down.
+
+Now let's write code to start accepting connections. In Java, you can accept incoming connection by blocking call to accept() method, as shown below :
+
+final Socket client = server.accept();
+This is a blocking method and blocks until a client connects to the server.
+As soon as a client connect it returns the Socket object which can be used to read client request and send response to client.
+Once you are done with a client you should close this socket and get ready to accept the new incoming connection by calling accept() again.
+This is the standard HTTP Server, its simple because HTTP is stateless, which means it doesn't need to remember the previous connection, all it cares for new incoming connections.
+This is an endless cycle until the server is stopped. Now let's see what is coming from the browser in form of the HTTP request.
+
+Our HTTP client (the Firefox browser) passes this text to our HTTP server written in Java.
+You can see that the request type is GET and the protocol used here is HTTP/1.1.
+So now our server is not only listening for connection, but accepting it and also reading HTTP request.
+Now the only thing remaining is to send an HTTP response back to the client. To keep our server simple, we will just send today's date to the client.
+
+Read more: https://javarevisited.blogspot.com/2015/06/how-to-create-http-server-in-java-serversocket-example.html#ixzz8dDqGZPju
