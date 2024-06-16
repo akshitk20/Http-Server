@@ -40,10 +40,10 @@ public class ClientHandler implements Runnable {
             Path filePath = Paths.get("public", requestedFile);
             if (Constants.GET.equals(method)) {
                 serveFile(out, outputStream, filePath);
-            } else if (Constants.POST.equals(method) && requestedFile.equals("/submit")) {
+            } else if (Constants.POST.equals(method)) {
                 handlePostRequest(reader, out);
             } else if (Constants.PUT.equals(method)) {
-                handlePutRequest(reader, out);
+                handlePutRequest(reader, out, filePath);
             } else if (Constants.DELETE.equals(method)) {
                 handleDeleteRequest(reader, out);
             } else {
@@ -64,8 +64,27 @@ public class ClientHandler implements Runnable {
         // handle delete handling
     }
 
-    private void handlePutRequest(BufferedReader reader, PrintWriter out) {
+    private void handlePutRequest(BufferedReader reader, PrintWriter out, Path path) {
         // handle put handling
+        System.out.println("Starting PUT method");
+        File file = path.toFile();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+            out.println("HTTP/1.1 200 OK");
+            out.println("Content-Type: text/plain");
+            out.println();
+            out.println("Resource updated successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            out.println("HTTP/1.1 500 Internal Server Error");
+            out.println("Content-Type: text/plain");
+            out.println();
+            out.println("Failed to update resource.");
+        }
     }
 
     private void handlePostRequest(BufferedReader reader, PrintWriter out) throws IOException {
