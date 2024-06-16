@@ -78,10 +78,7 @@ public class HttpServer {
                 payload.append(line).append("\n");
             }
             System.out.println("Post payload " + payload);
-            String body = reader.readLine();
-            if (body != null) {
-                payload.append(body);
-            }
+
 
             System.out.println("Post payload with body " + payload);
             String responseMessage = "Received POST data " + payload;
