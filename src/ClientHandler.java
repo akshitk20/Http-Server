@@ -38,10 +38,14 @@ public class ClientHandler implements Runnable {
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
             BufferedOutputStream outputStream = new BufferedOutputStream(clientSocket.getOutputStream());
             Path filePath = Paths.get("public", requestedFile);
-            if (method.equals("GET")) {
+            if (Constants.GET.equals(method)) {
                 serveFile(out, outputStream, filePath);
-            } else if (method.equals("POST") && requestedFile.equals("/submit")) {
+            } else if (Constants.POST.equals(method) && requestedFile.equals("/submit")) {
                 handlePostRequest(reader, out);
+            } else if (Constants.PUT.equals(method)) {
+                handlePutRequest(reader, out);
+            } else if (Constants.DELETE.equals(method)) {
+                handleDeleteRequest(reader, out);
             } else {
                 // File not found
                 out.println("HTTP/1.1 405 Method not allowed");
@@ -54,6 +58,12 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void handleDeleteRequest(BufferedReader reader, PrintWriter out) {
+    }
+
+    private void handlePutRequest(BufferedReader reader, PrintWriter out) {
     }
 
     private void handlePostRequest(BufferedReader reader, PrintWriter out) throws IOException {
