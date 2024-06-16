@@ -61,9 +61,11 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleDeleteRequest(BufferedReader reader, PrintWriter out) {
+        // handle delete handling
     }
 
     private void handlePutRequest(BufferedReader reader, PrintWriter out) {
+        // handle put handling
     }
 
     private void handlePostRequest(BufferedReader reader, PrintWriter out) throws IOException {
