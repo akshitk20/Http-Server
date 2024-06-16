@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 public class SimpleHttpServer {
-    private int port;
+    private final int port;
     public SimpleHttpServer(int port) {
         this.port = port;
     }
