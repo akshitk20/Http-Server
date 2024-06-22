@@ -48,6 +48,7 @@ public class ClientHandler implements Runnable {
                 handleDeleteRequest(reader, out);
             } else {
                 // File not found
+                // send response to client
                 out.println("HTTP/1.1 405 Method not allowed");
                 out.println("Content-Type: text/html");
                 out.println();
@@ -69,19 +70,30 @@ public class ClientHandler implements Runnable {
         System.out.println("Starting PUT method");
         File file = path.toFile();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            // Read and discard the request headers
             String line;
-            while (!(line = reader.readLine()).isEmpty()) {
-                writer.write(line);
-                writer.newLine();
+            int contentLength = 0;
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                if (line.startsWith("Content-Length")) {
+                    System.out.println("ignoring this " + line);
+                    contentLength = Integer.parseInt(line.split(": ")[1]);
+                }
             }
+            // Read the request body
+            char[] bodyChars = new char[contentLength];
+            reader.read(bodyChars, 0, contentLength);
+            String requestBody = new String(bodyChars);
+            writer.write(requestBody);
+
+            // send response to client
             out.println("HTTP/1.1 200 OK");
             out.println("Content-Type: text/plain");
             out.println();
             out.println("Resource updated successfully.");
             out.flush();
-            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
+            // send response to client
             out.println("HTTP/1.1 500 Internal Server Error");
             out.println("Content-Type: text/plain");
             out.println();
@@ -107,7 +119,7 @@ public class ClientHandler implements Runnable {
         // Parse form data
         Map<String, String> formData = parseFormData(body);
 
-        // Send Response
+        // Send Response to client
         System.out.println("Post payload with body " + formData);
         String responseMessage = "Received POST data " + formData;
         out.println("HTTP/1.1 200 OK");
@@ -122,7 +134,7 @@ public class ClientHandler implements Runnable {
         if (Files.exists(filePath)) {
             byte[] fileData = Files.readAllBytes(filePath);
             String contentType = Files.probeContentType(filePath);
-            // send HTTP response
+            // send HTTP response to client
             out.println("HTTP/1.1 200 OK");
             out.println("Content-Type: " + contentType);
             out.println("Content-Length: " + fileData.length);
@@ -132,6 +144,7 @@ public class ClientHandler implements Runnable {
             outputStream.flush();
         } else {
             // File not found
+            // send response to client
             out.println("HTTP/1.1 404 Not Found");
             out.println("Content-Type: text/html");
             out.println();
