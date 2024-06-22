@@ -70,7 +70,7 @@ public class ClientHandler implements Runnable {
         File file = path.toFile();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             String line;
-            while ((line = reader.readLine()) != null) {
+            while (!(line = reader.readLine()).isEmpty()) {
                 writer.write(line);
                 writer.newLine();
             }
@@ -78,6 +78,8 @@ public class ClientHandler implements Runnable {
             out.println("Content-Type: text/plain");
             out.println();
             out.println("Resource updated successfully.");
+            out.flush();
+            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
             out.println("HTTP/1.1 500 Internal Server Error");
