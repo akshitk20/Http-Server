@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
-
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
@@ -39,7 +38,8 @@ public class ClientHandler implements Runnable {
             BufferedOutputStream outputStream = new BufferedOutputStream(clientSocket.getOutputStream());
             Path filePath = Paths.get("public", requestedFile);
             if (Constants.GET.equals(method)) {
-                serveFile(out, outputStream, filePath);
+                GetClientHandler getClientHandler = new GetClientHandler();
+                getClientHandler.serveFile(out, outputStream, filePath);
             } else if (Constants.POST.equals(method)) {
                 handlePostRequest(reader, out);
             } else if (Constants.PUT.equals(method)) {
@@ -124,29 +124,6 @@ public class ClientHandler implements Runnable {
         out.println("<h1>Form Submission Successful</h1>");
         out.println("<p>" + responseMessage + "</p>");
         out.flush();
-    }
-
-    private void serveFile(PrintWriter out, BufferedOutputStream outputStream, Path filePath) throws IOException {
-        if (Files.exists(filePath)) {
-            byte[] fileData = Files.readAllBytes(filePath);
-            String contentType = Files.probeContentType(filePath);
-            // send HTTP response to client
-            out.println("HTTP/1.1 200 OK");
-            out.println("Content-Type: " + contentType);
-            out.println("Content-Length: " + fileData.length);
-            out.println();
-            out.flush();
-            outputStream.write(fileData, 0, fileData.length);
-            outputStream.flush();
-        } else {
-            // File not found
-            // send response to client
-            out.println("HTTP/1.1 404 Not Found");
-            out.println("Content-Type: text/html");
-            out.println();
-            out.println("<h1>404 Not Found</h1>");
-            out.flush();
-        }
     }
 
     private void handleDeleteRequest(Path path, PrintWriter out) {
