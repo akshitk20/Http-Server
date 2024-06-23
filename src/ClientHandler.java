@@ -1,8 +1,10 @@
+import handlers.GetClientHandler;
+import handlers.PostClientHandler;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -41,7 +43,8 @@ public class ClientHandler implements Runnable {
                 GetClientHandler getClientHandler = new GetClientHandler();
                 getClientHandler.serveFile(out, outputStream, filePath);
             } else if (Constants.POST.equals(method)) {
-                handlePostRequest(reader, out);
+                PostClientHandler postClientHandler = new PostClientHandler();
+                postClientHandler.handlePostRequest(reader, out);
             } else if (Constants.PUT.equals(method)) {
                 handlePutRequest(reader, out, filePath);
             } else if (Constants.DELETE.equals(method)) {
@@ -96,36 +99,6 @@ public class ClientHandler implements Runnable {
             out.println("Failed to update resource.");
         }
     }
-
-    private void handlePostRequest(BufferedReader reader, PrintWriter out) throws IOException {
-        String line;
-        int contentLength = 0;
-        while (!(line = reader.readLine()).isEmpty()) {
-            if (line.startsWith("Content-Length:")) {
-                contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
-            }
-        }
-
-        // Read the body
-        char[] charArray = new char[contentLength];
-        reader.read(charArray);
-        String body = new String(charArray);
-        System.out.println("Post payload " + body);
-
-        // Parse form data
-        Map<String, String> formData = parseFormData(body);
-
-        // Send Response to client
-        System.out.println("Post payload with body " + formData);
-        String responseMessage = "Received POST data " + formData;
-        out.println("HTTP/1.1 200 OK");
-        out.println("Content-Type: text/html");
-        out.println();
-        out.println("<h1>Form Submission Successful</h1>");
-        out.println("<p>" + responseMessage + "</p>");
-        out.flush();
-    }
-
     private void handleDeleteRequest(Path path, PrintWriter out) {
         // handle delete request
         File file = path.toFile();
@@ -147,18 +120,5 @@ public class ClientHandler implements Runnable {
             out.println();
             out.println("File not found");
         }
-    }
-
-    private Map<String, String> parseFormData(String body) {
-        Map<String, String> formData = new HashMap<>();
-        String[] pairs = body.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            if (keyValue.length == 2) {
-                formData.put(URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8), URLDecoder.decode(keyValue[1],
-                        StandardCharsets.UTF_8));
-            }
-        }
-        return formData;
     }
 }
