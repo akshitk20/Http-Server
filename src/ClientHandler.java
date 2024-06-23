@@ -1,3 +1,4 @@
+import handlers.DeleteClientHandler;
 import handlers.GetClientHandler;
 import handlers.PostClientHandler;
 import handlers.PutClientHandler;
@@ -50,7 +51,8 @@ public class ClientHandler implements Runnable {
                 PutClientHandler putClientHandler = new PutClientHandler();
                 putClientHandler.handlePutRequest(reader, out, filePath);
             } else if (Constants.DELETE.equals(method)) {
-                handleDeleteRequest(filePath, out);
+                DeleteClientHandler deleteClientHandler = new DeleteClientHandler();
+                deleteClientHandler.handleDeleteRequest(filePath, out);
             } else {
                 // File not found
                 // send response to client
@@ -63,30 +65,6 @@ public class ClientHandler implements Runnable {
             System.out.println("Handled request: " + input);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-
-    private void handleDeleteRequest(Path path, PrintWriter out) {
-        // handle delete request
-        File file = path.toFile();
-        if (file.exists()) {
-            if (file.delete()) {
-                out.println("HTTP/1.1 200 OK");
-                out.println("Content-Type: text/plain");
-                out.println();
-                out.println("File deleted successfully");
-            } else {
-                out.println("HTTP/1.1 500 Internal Server Error");
-                out.println("Content-Type: text/plain");
-                out.println();
-                out.println("Failed to delete the file");
-            }
-        } else {
-            out.println("HTTP/1.1 404 Not Found");
-            out.println("Content-Type: text/plain");
-            out.println();
-            out.println("File not found");
         }
     }
 }
