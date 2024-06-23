@@ -43,7 +43,8 @@ public class ClientHandler implements Runnable {
             Path filePath = Paths.get("public", requestedFile);
             if (Constants.GET.equals(method)) {
                 GetClientHandler getClientHandler = new GetClientHandler();
-                getClientHandler.serveFile(out, outputStream, filePath);
+                //getClientHandler.serveFile(out, outputStream, filePath);
+                getClientHandler.handleGetRequest(requestedFile, out);
             } else if (Constants.POST.equals(method)) {
                 PostClientHandler postClientHandler = new PostClientHandler();
                 postClientHandler.handlePostRequest(reader, out);
