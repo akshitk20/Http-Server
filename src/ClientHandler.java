@@ -1,5 +1,6 @@
 import handlers.GetClientHandler;
 import handlers.PostClientHandler;
+import handlers.PutClientHandler;
 
 import java.io.*;
 import java.net.Socket;
@@ -46,7 +47,8 @@ public class ClientHandler implements Runnable {
                 PostClientHandler postClientHandler = new PostClientHandler();
                 postClientHandler.handlePostRequest(reader, out);
             } else if (Constants.PUT.equals(method)) {
-                handlePutRequest(reader, out, filePath);
+                PutClientHandler putClientHandler = new PutClientHandler();
+                putClientHandler.handlePutRequest(reader, out, filePath);
             } else if (Constants.DELETE.equals(method)) {
                 handleDeleteRequest(filePath, out);
             } else {
@@ -64,41 +66,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void handlePutRequest(BufferedReader reader, PrintWriter out, Path path) {
-        // handle put handling
-        System.out.println("Starting PUT method");
-        File file = path.toFile();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            // Read and discard the request headers
-            String line;
-            int contentLength = 0;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                if (line.startsWith("Content-Length")) {
-                    System.out.println("ignoring this " + line);
-                    contentLength = Integer.parseInt(line.split(": ")[1]);
-                }
-            }
-            // Read the request body
-            char[] bodyChars = new char[contentLength];
-            reader.read(bodyChars, 0, contentLength);
-            String requestBody = new String(bodyChars);
-            writer.write(requestBody);
 
-            // send response to client
-            out.println("HTTP/1.1 200 OK");
-            out.println("Content-Type: text/plain");
-            out.println();
-            out.println("Resource updated successfully.");
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-            // send response to client
-            out.println("HTTP/1.1 500 Internal Server Error");
-            out.println("Content-Type: text/plain");
-            out.println();
-            out.println("Failed to update resource.");
-        }
-    }
     private void handleDeleteRequest(Path path, PrintWriter out) {
         // handle delete request
         File file = path.toFile();

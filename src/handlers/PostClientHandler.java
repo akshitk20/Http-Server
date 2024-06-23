@@ -13,6 +13,7 @@ public class PostClientHandler {
     public void handlePostRequest(BufferedReader reader, PrintWriter out) throws IOException {
         String line;
         int contentLength = 0;
+        // Read and discard the request headers
         while (!(line = reader.readLine()).isEmpty()) {
             if (line.startsWith("Content-Length:")) {
                 contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
