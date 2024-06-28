@@ -61,14 +61,26 @@ public class GetClientHandler {
     }
 
     private void renderTemplate(String templatePath, Map<String, String> variables, PrintWriter out) {
-        try (BufferedReader templateReader = new BufferedReader(new FileReader(templatePath))) {
-            String line;
-            while ((line = templateReader.readLine()) != null) {
-                for (Map.Entry<String, String> entry : variables.entrySet()) {
-                    line = line.replace("{{" + entry.getKey() + "}}", entry.getValue());
-                }
-                out.println(line);
+        System.out.println("starting enhanced get method");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(templatePath))) {
+            String line = "";
+            StringBuilder response = new StringBuilder();
+            //while ((line = templateReader.readLine()) != null) {
+            for (Map.Entry<String, String> entry : variables.entrySet()) {
+                //line = line.replace("{{" + entry.getKey() + "}}", entry.getValue());
+                line =   entry.getKey() + " " + entry.getValue();
+                response.append(line).append("\n");
             }
+            System.out.println("Response send is " +response);
+            out.println("HTTP/1.1 200 OK");
+            out.println("Content-Type: text/plain");
+            out.println("Content-Length: " + response.length());
+            // blank line between header and content
+            out.println();
+            out.println(response);
+            out.flush();
+            writer.write(response.toString());
+            //}
         } catch (IOException e) {
             e.printStackTrace();
         }
