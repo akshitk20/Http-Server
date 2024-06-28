@@ -65,9 +65,7 @@ public class GetClientHandler {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(templatePath))) {
             String line = "";
             StringBuilder response = new StringBuilder();
-            //while ((line = templateReader.readLine()) != null) {
             for (Map.Entry<String, String> entry : variables.entrySet()) {
-                //line = line.replace("{{" + entry.getKey() + "}}", entry.getValue());
                 line =   entry.getKey() + " " + entry.getValue();
                 response.append(line).append("\n");
             }
@@ -75,12 +73,10 @@ public class GetClientHandler {
             out.println("HTTP/1.1 200 OK");
             out.println("Content-Type: text/plain");
             out.println("Content-Length: " + response.length());
-            // blank line between header and content
             out.println();
             out.println(response);
             out.flush();
             writer.write(response.toString());
-            //}
         } catch (IOException e) {
             e.printStackTrace();
         }
