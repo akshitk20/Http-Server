@@ -4,8 +4,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GetClientHandler {
     // simple get request method that serves the index.html file
@@ -36,10 +34,7 @@ public class GetClientHandler {
     public void handleGetRequest(String filePath, PrintWriter out) {
 
         if ("/index.html".equals(filePath)) {
-            Map<String, String> variables = new HashMap<>();
-            variables.put("title", "My Simple HTTP Server");
-            variables.put("message", "Welcome to my enhanced HTTP server!");
-            renderTemplate("templates/index.html", variables, out);
+            renderTemplate("templates/index.html" , out);
         } else {
             File file = new File("public" + filePath);
             if (file.exists() && !file.isDirectory()) {
@@ -61,7 +56,7 @@ public class GetClientHandler {
         }
     }
 
-    private void renderTemplate(String templatePath, Map<String, String> variables, PrintWriter out) {
+    private void renderTemplate(String templatePath,  PrintWriter out) {
         System.out.println("starting enhanced get method");
         try (BufferedReader reader  = new BufferedReader(new FileReader(templatePath))) {
             StringBuilder content = new StringBuilder();
@@ -72,15 +67,18 @@ public class GetClientHandler {
             reader.close();
             StringBuilder dynamicContent = new StringBuilder("<h1> Welcome to Dynamic HTTP Server </h1>");
             dynamicContent.append("\n");
+            dynamicContent.append("\t\t").append("<p>This is the home page.</p>").append("\n");
             dynamicContent.append("\t\t").append("<p>Current Time: ").append(LocalDateTime.now()).append("</p>");
             dynamicContent.append("\n");
             dynamicContent.append("\t\t").append("<p> Requested Path: ").append(templatePath).append("</p>");
+            dynamicContent.append("\n");
+            dynamicContent.append("\t\t").append("<a href=\"form.html\">Go to Form</a>");
             String formattedHtmlContent = content.toString().replace(" {{dynamic_content}}", dynamicContent);
 //
             // Format the HTML content with current time and requested path
             System.out.println("Response send is " +formattedHtmlContent);
             out.println("HTTP/1.1 200 OK");
-            out.println("Content-Type: text/plain");
+            out.println("Content-Type: " + getMimeType(templatePath));
             out.println("Content-Length: " + formattedHtmlContent.length());
             // space between headers and body
             out.println();
