@@ -40,6 +40,23 @@ public class PostClientHandler {
         out.flush();
     }
 
+    public void uploadFile(BufferedReader reader, PrintWriter out) {
+        try {
+            String line;
+            String fileName;
+            while (!(line = reader.readLine()).isEmpty())) {
+                if (line.contains("filename=")) {
+                    fileName = line.split("filename=")[1].replaceAll("\"", "");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadFile() {
+
+    }
     private Map<String, String> parseFormData(String body) {
         Map<String, String> formData = new HashMap<>();
         String[] pairs = body.split("&");

@@ -74,7 +74,7 @@ public class GetClientHandler {
             dynamicContent.append("\n");
             dynamicContent.append("\t\t").append("<a href=\"form.html\">Go to Form</a>");
             String formattedHtmlContent = content.toString().replace(" {{dynamic_content}}", dynamicContent);
-//
+
             // Format the HTML content with current time and requested path
             System.out.println("Response send is " +formattedHtmlContent);
             out.println("HTTP/1.1 200 OK");
