@@ -3,6 +3,7 @@ package handlers;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,21 +63,29 @@ public class GetClientHandler {
 
     private void renderTemplate(String templatePath, Map<String, String> variables, PrintWriter out) {
         System.out.println("starting enhanced get method");
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(templatePath))) {
-            String line = "";
-            StringBuilder response = new StringBuilder();
-            for (Map.Entry<String, String> entry : variables.entrySet()) {
-                line =   entry.getKey() + " " + entry.getValue();
-                response.append(line).append("\n");
+        try (BufferedReader reader  = new BufferedReader(new FileReader(templatePath))) {
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
             }
-            System.out.println("Response send is " +response);
+            reader.close();
+            StringBuilder dynamicContent = new StringBuilder("<h1> Welcome to Dynamic HTTP Server </h1>");
+            dynamicContent.append("\n");
+            dynamicContent.append("\t\t").append("<p>Current Time: ").append(LocalDateTime.now()).append("</p>");
+            dynamicContent.append("\n");
+            dynamicContent.append("\t\t").append("<p> Requested Path: ").append(templatePath).append("</p>");
+            String formattedHtmlContent = content.toString().replace(" {{dynamic_content}}", dynamicContent);
+//
+            // Format the HTML content with current time and requested path
+            System.out.println("Response send is " +formattedHtmlContent);
             out.println("HTTP/1.1 200 OK");
             out.println("Content-Type: text/plain");
-            out.println("Content-Length: " + response.length());
+            out.println("Content-Length: " + formattedHtmlContent.length());
+            // space between headers and body
             out.println();
-            out.println(response);
+            out.println(formattedHtmlContent);
             out.flush();
-            writer.write(response.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
