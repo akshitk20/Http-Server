@@ -1,12 +1,11 @@
 package handlers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PostClientHandler {
 
@@ -40,14 +39,29 @@ public class PostClientHandler {
         out.flush();
     }
 
+
     public void uploadFile(BufferedReader reader, PrintWriter out) {
         try {
             String line;
-            String fileName;
-            while (!(line = reader.readLine()).isEmpty())) {
-                if (line.contains("filename=")) {
+            String fileName = null;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Content-Disposition")) {
                     fileName = line.split("filename=")[1].replaceAll("\"", "");
+                    break;
                 }
+            }
+            if (Objects.nonNull(fileName)) {
+                File file = new File("uploads", fileName);
+                try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                    while (!(line = reader.readLine()).startsWith("--")) {
+                        outputStream.write(line.getBytes());
+                    }
+                }
+                out.println("HTTP/1.1 200 OK");
+                out.println("Content-Type: text/plain");
+                out.println();
+                out.println("File uploaded successfully");
+                out.flush();
             }
         } catch (IOException e) {
             e.printStackTrace();

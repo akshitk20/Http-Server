@@ -48,9 +48,9 @@ public class ClientHandler implements Runnable {
             } else if (Constants.POST.equals(method)) {
                 PostClientHandler postClientHandler = new PostClientHandler();
                 if (requestedFile.contains("upload")) {
-
+                    postClientHandler.uploadFile(reader, out);
                 } else if (requestedFile.contains("download")) {
-
+                    postClientHandler.downloadFile();
                 } else {
                     postClientHandler.handlePostRequest(reader, out);
                 }
