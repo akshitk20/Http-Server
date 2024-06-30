@@ -1,5 +1,7 @@
 package handlers;
 
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -10,34 +12,67 @@ import java.util.Objects;
 
 public class PostClientHandler {
 
-    public void handlePostRequest(BufferedReader reader, PrintWriter out) throws IOException {
-        String line;
-        int contentLength = 0;
-        // Read and discard the request headers
-        while (!(line = reader.readLine()).isEmpty()) {
-            if (line.startsWith("Content-Length:")) {
-                contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
+    public void handlePostRequest(String path, BufferedReader reader, PrintWriter out, Map<Integer, JSONObject> items) throws IOException {
+        try {
+            if (path.contains("items")) {
+                // handling post request for /items by sending a json response
+                String line;
+                int contentLength = 0;
+                while (!(line = reader.readLine()).isEmpty()) {
+                    if (line.startsWith("Content-Length:")) {
+                        contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
+                    }
+                }
+                // Read the body
+                char[] charArray = new char[contentLength];
+                reader.read(charArray);
+                String body = new String(charArray);
+
+                JSONObject item = new JSONObject(body);
+                int id = items.size() + 1;
+                item.put("id", id);
+                items.put(id, item);
+
+                out.println("HTTP/1.1 201 created");
+                out.println("Content-Type: application/json");
+                out.println();
+                out.println(item);
+            } else {
+                // Parsing form data to return the result of a form submitted
+                String line;
+                int contentLength = 0;
+                // Read and discard the request headers
+                while (!(line = reader.readLine()).isEmpty()) {
+                    if (line.startsWith("Content-Length:")) {
+                        contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
+                    }
+                }
+
+                // Read the body
+                char[] charArray = new char[contentLength];
+                reader.read(charArray);
+                String body = new String(charArray);
+                System.out.println("Post payload " + body);
+
+                // Parse form data
+                Map<String, String> formData = parseFormData(body);
+
+                // Send Response to client
+                System.out.println("Post payload with body " + formData);
+                String responseMessage = "Received POST data " + formData;
+                out.println("HTTP/1.1 200 OK");
+                out.println("Content-Type: text/html");
+                out.println();
+                out.println("<h1>Form Submission Successful</h1>");
+                out.println("<p>" + responseMessage + "</p>");
+                out.flush();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("HTTP/1.1 500 Internal Server Error");
+            out.println();
+            out.println(e.getMessage());
         }
-
-        // Read the body
-        char[] charArray = new char[contentLength];
-        reader.read(charArray);
-        String body = new String(charArray);
-        System.out.println("Post payload " + body);
-
-        // Parse form data
-        Map<String, String> formData = parseFormData(body);
-
-        // Send Response to client
-        System.out.println("Post payload with body " + formData);
-        String responseMessage = "Received POST data " + formData;
-        out.println("HTTP/1.1 200 OK");
-        out.println("Content-Type: text/html");
-        out.println();
-        out.println("<h1>Form Submission Successful</h1>");
-        out.println("<p>" + responseMessage + "</p>");
-        out.flush();
     }
 
 

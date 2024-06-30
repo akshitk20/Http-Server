@@ -2,15 +2,19 @@ import handlers.DeleteClientHandler;
 import handlers.GetClientHandler;
 import handlers.PostClientHandler;
 import handlers.PutClientHandler;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
+    private static final Map<Integer, JSONObject> items = new HashMap<>();
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
@@ -48,7 +52,7 @@ public class ClientHandler implements Runnable {
                 } else if (requestedFile.contains("download")) {
                     postClientHandler.downloadFile(requestedFile, out, outputStream);
                 } else {
-                    postClientHandler.handlePostRequest(reader, out);
+                    postClientHandler.handlePostRequest(requestedFile,reader, out, items);
                 }
             } else if (Constants.PUT.equals(method)) {
                 PutClientHandler putClientHandler = new PutClientHandler();
