@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -78,10 +77,14 @@ public class PostClientHandler {
                 byte[] fileBytes = Files.readAllBytes(file.toPath());
                 out.println("HTTP/1.1 200 OK");
                 out.println("Content-Type: application/octet-stream");
-                out.println("Content-Disposition: attachment; filename=\"" + requestedFile + "\"");
+                out.println("Content-Disposition: attachment; filename=\"" + fileName + "\"");
                 out.println("Content-Length: " + fileBytes.length);
                 out.println();
+
+                // Flush the header
                 out.flush();
+
+                // Write the file content
                 outputStream.write(fileBytes);
                 outputStream.flush();
             } catch (IOException e) {

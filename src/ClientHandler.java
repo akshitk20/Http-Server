@@ -5,12 +5,8 @@ import handlers.PutClientHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class ClientHandler implements Runnable {
