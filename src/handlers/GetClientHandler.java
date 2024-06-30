@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import org.json.JSONObject;
 
 public class GetClientHandler {
     // simple get request method that serves the index.html file
