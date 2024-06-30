@@ -3,6 +3,7 @@ package handlers;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -68,8 +69,27 @@ public class PostClientHandler {
         }
     }
 
-    public void downloadFile() {
-
+    public void downloadFile(String requestedFile, PrintWriter out) {
+        File file = new File("uploads", requestedFile);
+        if (file.exists()) {
+            try {
+                byte[] fileBytes = Files.readAllBytes(file.toPath());
+                out.println("HTTP/1.1 200 OK");
+                out.println("Content-Type: application/octet-stream");
+                out.println("Content-Disposition: attachment; filename=\"" + requestedFile + "\"");
+                out.println("Content-Length: " + fileBytes.length);
+                out.println();
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            out.println("HTTP/1.1 404 Not Found");
+            out.println("Content-Type: text/plain");
+            out.println();
+            out.println("File not found");
+            out.flush();
+        }
     }
     private Map<String, String> parseFormData(String body) {
         Map<String, String> formData = new HashMap<>();

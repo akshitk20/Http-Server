@@ -50,7 +50,7 @@ public class ClientHandler implements Runnable {
                 if (requestedFile.contains("upload")) {
                     postClientHandler.uploadFile(reader, out);
                 } else if (requestedFile.contains("download")) {
-                    postClientHandler.downloadFile();
+                    postClientHandler.downloadFile(requestedFile, out);
                 } else {
                     postClientHandler.handlePostRequest(reader, out);
                 }
