@@ -2,3 +2,5 @@ curl -X POST http://localhost:8080/upload -F "filename=@/Users/akshitkhatri/Docu
 # we need to follow the multipart/form-data specification more closely.
 # In multipart form data, the filename is typically specified in the Content-Disposition header
 # within each part of the body.
+
+curl -v -X POST "http://localhost:8080/download?filename=test.txt"

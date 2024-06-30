@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -69,8 +70,9 @@ public class PostClientHandler {
         }
     }
 
-    public void downloadFile(String requestedFile, PrintWriter out) {
-        File file = new File("uploads", requestedFile);
+    public void downloadFile(String requestedFile, PrintWriter out, BufferedOutputStream outputStream) {
+        String fileName = requestedFile.split("filename=")[1];
+        File file = new File("uploads", fileName);
         if (file.exists()) {
             try {
                 byte[] fileBytes = Files.readAllBytes(file.toPath());
@@ -80,6 +82,8 @@ public class PostClientHandler {
                 out.println("Content-Length: " + fileBytes.length);
                 out.println();
                 out.flush();
+                outputStream.write(fileBytes);
+                outputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
