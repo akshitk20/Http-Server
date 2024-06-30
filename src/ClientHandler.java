@@ -44,7 +44,7 @@ public class ClientHandler implements Runnable {
             if (Constants.GET.equals(method)) {
                 GetClientHandler getClientHandler = new GetClientHandler();
                 //getClientHandler.serveFile(out, outputStream, filePath);
-                getClientHandler.handleGetRequest(requestedFile, out);
+                getClientHandler.handleGetRequest(requestedFile, out, items);
             } else if (Constants.POST.equals(method)) {
                 PostClientHandler postClientHandler = new PostClientHandler();
                 if (requestedFile.contains("upload")) {
@@ -52,7 +52,7 @@ public class ClientHandler implements Runnable {
                 } else if (requestedFile.contains("download")) {
                     postClientHandler.downloadFile(requestedFile, out, outputStream);
                 } else {
-                    postClientHandler.handlePostRequest(requestedFile,reader, out, items);
+                    postClientHandler.handlePostRequest(requestedFile, reader, out, items);
                 }
             } else if (Constants.PUT.equals(method)) {
                 PutClientHandler putClientHandler = new PutClientHandler();

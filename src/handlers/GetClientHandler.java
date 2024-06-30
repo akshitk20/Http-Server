@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 public class GetClientHandler {
@@ -32,10 +34,25 @@ public class GetClientHandler {
     }
 
     // updated GET request method to render dynamic html content
-    public void handleGetRequest(String filePath, PrintWriter out) {
+    public void handleGetRequest(String filePath, PrintWriter out, Map<Integer, JSONObject> items) {
 
         if ("/index.html".equals(filePath)) {
             renderTemplate("templates/index.html" , out);
+        } else if (filePath.contains("items")) {
+            String[] parts = filePath.split("/");
+            if (parts.length == 3 && "items".equals(parts[1])) {
+                int id = Integer.parseInt(parts[2]);
+                JSONObject item = items.get(id);
+                if (item != null) {
+                    out.println("HTTP/1.1 200 OK");
+                    out.println("Content-Type: application/json");
+                    out.println();
+                    out.println(item);
+                } else {
+                    out.println("HTTP/1.1 404 NOT FOUND");
+                    out.println();
+                }
+            }
         } else {
             File file = new File("public" + filePath);
             if (file.exists() && !file.isDirectory()) {

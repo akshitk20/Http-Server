@@ -6,3 +6,5 @@ curl -X POST http://localhost:8080/upload -F "filename=@/Users/akshitkhatri/Docu
 curl -v -X POST "http://localhost:8080/download?filename=test.txt"
 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Item1","description":"This is item 1"}' http://localhost:8080/items
+
+curl -X GET http://localhost:8080/items/1
