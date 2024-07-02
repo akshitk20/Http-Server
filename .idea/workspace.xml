@@ -8,7 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/GetClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/GetClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/PutClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/PutClientHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +102,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/handlers/GetClientHandler.java</url>
-          <line>78</line>
+          <line>79</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -125,20 +125,25 @@
           <line>83</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/handlers/PostClientHandler.java</url>
           <line>16</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/handlers/GetClientHandler.java</url>
           <line>40</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/handlers/GetClientHandler.java</url>
-          <line>38</line>
+          <line>37</line>
           <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/handlers/PutClientHandler.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

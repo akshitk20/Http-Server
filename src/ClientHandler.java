@@ -56,7 +56,7 @@ public class ClientHandler implements Runnable {
                 }
             } else if (Constants.PUT.equals(method)) {
                 PutClientHandler putClientHandler = new PutClientHandler();
-                putClientHandler.handlePutRequest(reader, out, filePath);
+                putClientHandler.handlePutRequest(reader, out, filePath, items);
             } else if (Constants.DELETE.equals(method)) {
                 DeleteClientHandler deleteClientHandler = new DeleteClientHandler();
                 deleteClientHandler.handleDeleteRequest(filePath, out);
