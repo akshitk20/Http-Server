@@ -14,3 +14,5 @@ curl -X  PUT http://localhost:8080/testfile.txt -d "This is the updated content"
 curl -X PUT -H "Content-Type: application/json" -d '{"name":"Updated Item1","description":"This is the updated item 1"}' http://localhost:8080/items/1
 
 curl -v -X DELETE http://localhost:8080/testfile.txt
+
+curl -X DELETE http://localhost:8080/items/1

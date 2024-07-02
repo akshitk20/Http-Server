@@ -59,7 +59,7 @@ public class ClientHandler implements Runnable {
                 putClientHandler.handlePutRequest(reader, out, filePath, items);
             } else if (Constants.DELETE.equals(method)) {
                 DeleteClientHandler deleteClientHandler = new DeleteClientHandler();
-                deleteClientHandler.handleDeleteRequest(filePath, out);
+                deleteClientHandler.handleDeleteRequest(filePath, out, items);
             } else {
                 // File not found
                 // send response to client
