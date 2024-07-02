@@ -33,12 +33,13 @@ public class GetClientHandler {
         }
     }
 
-    // updated GET request method to render dynamic html content
     public void handleGetRequest(String filePath, PrintWriter out, Map<Integer, JSONObject> items) {
 
         if ("/index.html".equals(filePath)) {
+            // updated GET request method to render dynamic html content
             renderTemplate("templates/index.html" , out);
         } else if (filePath.contains("items")) {
+            // GET the response from map and return JSON response
             String[] parts = filePath.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 int id = Integer.parseInt(parts[2]);

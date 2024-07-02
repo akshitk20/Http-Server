@@ -29,6 +29,7 @@ Features to consider
 1. API Development:
 Build a RESTful API with endpoints to handle different resources.
 Implement JSON parsing and response generation.
+For simplicity, we'll use the org.json library, which is a lightweight JSON library. You can download the org.json library jar file from here.
 
 2. Database Integration:
 Connect your server to a database (e.g., MySQL, PostgreSQL) to handle data storage and retrieval.
