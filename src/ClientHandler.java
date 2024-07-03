@@ -1,7 +1,4 @@
-import handlers.DeleteClientHandler;
-import handlers.GetClientHandler;
-import handlers.PostClientHandler;
-import handlers.PutClientHandler;
+import handlers.*;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -15,6 +12,8 @@ import java.util.StringTokenizer;
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private static final Map<Integer, JSONObject> items = new HashMap<>();
+    private static final Map<String, Map<String, RouteHandler>> routes = new HashMap<>();
+
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
