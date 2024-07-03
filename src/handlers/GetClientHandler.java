@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-public class GetClientHandler {
+public class GetClientHandler implements RouteHandler {
     // simple get request method that serves the index.html file
     public void serveFile(PrintWriter out, BufferedOutputStream outputStream, Path filePath) throws IOException {
         if (Files.exists(filePath)) {
@@ -122,5 +122,10 @@ public class GetClientHandler {
         } else {
             return "application/octet-stream";
         }
+    }
+
+    @Override
+    public void handle(String path, String method, BufferedReader in, PrintWriter out) throws IOException {
+
     }
 }

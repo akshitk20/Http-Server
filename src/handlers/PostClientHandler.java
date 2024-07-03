@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class PostClientHandler {
+public class PostClientHandler implements RouteHandler {
 
     public void handlePostRequest(String path, BufferedReader reader, PrintWriter out, Map<Integer, JSONObject> items) throws IOException {
         try {
@@ -144,5 +144,10 @@ public class PostClientHandler {
             }
         }
         return formData;
+    }
+
+    @Override
+    public void handle(String path, String method, BufferedReader in, PrintWriter out) throws IOException {
+
     }
 }

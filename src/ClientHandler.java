@@ -73,4 +73,17 @@ public class ClientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
+
+    public static void initializeRoutes() {
+        // Define Routes
+        addRoute("GET", "/", new GetClientHandler());
+        addRoute("GET", "/items", new GetClientHandler());
+        addRoute("POST", "/", new PostClientHandler());
+        addRoute("POST", "/items", new PostClientHandler());
+        addRoute("POST", "/upload", new PostClientHandler());
+        addRoute("POST", "/download", new PostClientHandler());
+    }
+
+    private static void addRoute(String method, String path, RouteHandler routeHandler) {
+    }
 }

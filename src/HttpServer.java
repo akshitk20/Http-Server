@@ -10,6 +10,7 @@ public class HttpServer {
     }
 
     public void start() {
+        ClientHandler.initializeRoutes();
         try(ServerSocket socket = new ServerSocket(port)) {
             System.out.println("Listening for connection on port " + port);
             while (true) {

@@ -2,12 +2,14 @@ package handlers;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class DeleteClientHandler {
+public class DeleteClientHandler implements RouteHandler {
     public void handleDeleteRequest(Path path, PrintWriter out, Map<Integer, JSONObject> items) {
         // handle delete request
         File file = path.toFile();
@@ -47,5 +49,10 @@ public class DeleteClientHandler {
                 out.println("File not found");
             }
         }
+    }
+
+    @Override
+    public void handle(String path, String method, BufferedReader in, PrintWriter out) throws IOException {
+
     }
 }

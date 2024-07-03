@@ -6,7 +6,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class PutClientHandler {
+public class PutClientHandler implements RouteHandler {
     public void handlePutRequest(BufferedReader reader, PrintWriter out, Path path,
                                  Map<Integer, JSONObject> items) {
         // handle put handling
@@ -85,5 +85,10 @@ public class PutClientHandler {
                 out.println("Failed to update resource.");
             }
         }
+    }
+
+    @Override
+    public void handle(String path, String method, BufferedReader in, PrintWriter out) throws IOException {
+
     }
 }
