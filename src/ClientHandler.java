@@ -78,10 +78,14 @@ public class ClientHandler implements Runnable {
         // Define Routes
         addRoute("GET", "/", new GetClientHandler());
         addRoute("GET", "/items", new GetClientHandler());
-        addRoute("POST", "/", new PostClientHandler());
+        addRoute("POST", "/submit", new PostClientHandler());
         addRoute("POST", "/items", new PostClientHandler());
         addRoute("POST", "/upload", new PostClientHandler());
         addRoute("POST", "/download", new PostClientHandler());
+        addRoute("PUT", "/", new PutClientHandler());
+        addRoute("PUT","/items/{id}", new PutClientHandler());
+        addRoute("DELETE","/", new DeleteClientHandler());
+        addRoute("DELETE","/items/{id}", new DeleteClientHandler());
     }
 
     private static void addRoute(String method, String path, RouteHandler routeHandler) {
