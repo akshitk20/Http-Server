@@ -33,14 +33,15 @@ public class GetClientHandler implements RouteHandler {
         }
     }
 
-    public void handleGetRequest(String filePath, PrintWriter out, Map<Integer, JSONObject> items) {
-
-        if ("/index.html".equals(filePath)) {
+    @Override
+    public void handle(String path, String method, BufferedReader in,
+                       PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
+        if ("/".equals(path)) {
             // updated GET request method to render dynamic html content
             renderTemplate("templates/index.html" , out);
-        } else if (filePath.contains("items")) {
+        } else if (path.contains("items")) {
             // GET the response from map and return JSON response
-            String[] parts = filePath.split("/");
+            String[] parts = path.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 int id = Integer.parseInt(parts[2]);
                 JSONObject item = items.get(id);
@@ -55,7 +56,7 @@ public class GetClientHandler implements RouteHandler {
                 }
             }
         } else {
-            File file = new File("public" + filePath);
+            File file = new File("public" + path);
             if (file.exists() && !file.isDirectory()) {
                 try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
                     String line;
@@ -122,10 +123,5 @@ public class GetClientHandler implements RouteHandler {
         } else {
             return "application/octet-stream";
         }
-    }
-
-    @Override
-    public void handle(String path, String method, BufferedReader in, PrintWriter out) throws IOException {
-
     }
 }

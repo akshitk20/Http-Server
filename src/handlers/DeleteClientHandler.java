@@ -52,7 +52,8 @@ public class DeleteClientHandler implements RouteHandler {
     }
 
     @Override
-    public void handle(String path, String method, BufferedReader in, PrintWriter out) throws IOException {
+    public void handle(String path, String method,
+                       BufferedReader in, PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
 
     }
 }
