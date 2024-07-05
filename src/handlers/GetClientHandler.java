@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-public class GetClientHandler {
+public class GetClientHandler implements RouteHandler {
     // simple get request method that serves the index.html file
     public void serveFile(PrintWriter out, BufferedOutputStream outputStream, Path filePath) throws IOException {
         if (Files.exists(filePath)) {
@@ -33,14 +33,15 @@ public class GetClientHandler {
         }
     }
 
-    public void handleGetRequest(String filePath, PrintWriter out, Map<Integer, JSONObject> items) {
-
-        if ("/index.html".equals(filePath)) {
+    @Override
+    public void handle(String path, String method, BufferedReader in,
+                       PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
+        if ("/".equals(path)) {
             // updated GET request method to render dynamic html content
             renderTemplate("templates/index.html" , out);
-        } else if (filePath.contains("items")) {
+        } else if (path.contains("items")) {
             // GET the response from map and return JSON response
-            String[] parts = filePath.split("/");
+            String[] parts = path.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 int id = Integer.parseInt(parts[2]);
                 JSONObject item = items.get(id);
@@ -55,7 +56,7 @@ public class GetClientHandler {
                 }
             }
         } else {
-            File file = new File("public" + filePath);
+            File file = new File("public" + path);
             if (file.exists() && !file.isDirectory()) {
                 try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
                     String line;

@@ -9,7 +9,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"Item1","descriptio
 
 curl -X GET http://localhost:8080/items/1
 
-curl -X  PUT http://localhost:8080/testfile.txt -d "This is the updated content"
+curl -X  PUT http://localhost:8080/testfile.txt -d "This is the new updated content"
 
 curl -X PUT -H "Content-Type: application/json" -d '{"name":"Updated Item1","description":"This is the updated item 1"}' http://localhost:8080/items/1
 
