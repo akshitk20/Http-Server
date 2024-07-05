@@ -3,11 +3,8 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
@@ -46,39 +43,6 @@ public class ClientHandler implements Runnable {
             } else {
                 sendNotSupportedMethod(out);
             }
-
-            // building output
-//            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
-//            BufferedOutputStream outputStream = new BufferedOutputStream(clientSocket.getOutputStream());
-//            Path filePath = Paths.get("public", requestedFile);
-//            if (Constants.GET.equals(method)) {
-//                GetClientHandler getClientHandler = new GetClientHandler();
-//                //getClientHandler.serveFile(out, outputStream, filePath);
-//                getClientHandler.handleGetRequest(requestedFile, out, items);
-//            } else if (Constants.POST.equals(method)) {
-//                PostClientHandler postClientHandler = new PostClientHandler();
-//                if (requestedFile.contains("upload")) {
-//                    postClientHandler.uploadFile(reader, out);
-//                } else if (requestedFile.contains("download")) {
-//                    postClientHandler.downloadFile(requestedFile, out, outputStream);
-//                } else {
-//                    postClientHandler.handlePostRequest(requestedFile, reader, out, items);
-//                }
-//            } else if (Constants.PUT.equals(method)) {
-//                PutClientHandler putClientHandler = new PutClientHandler();
-//                putClientHandler.handlePutRequest(reader, out, filePath, items);
-//            } else if (Constants.DELETE.equals(method)) {
-//                DeleteClientHandler deleteClientHandler = new DeleteClientHandler();
-//                deleteClientHandler.handleDeleteRequest(filePath, out, items);
-//            } else {
-//                // File not found
-//                // send response to client
-//                out.println("HTTP/1.1 405 Method not allowed");
-//                out.println("Content-Type: text/html");
-//                out.println();
-//                out.println("<h1>405 Method not allowed</h1>");
-//                out.flush();
-//            }
             System.out.println("Handled request: " + input);
         } catch (IOException e) {
             throw new RuntimeException(e);
