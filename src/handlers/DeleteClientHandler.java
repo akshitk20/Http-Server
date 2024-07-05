@@ -6,16 +6,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.Map;
 
 public class DeleteClientHandler implements RouteHandler {
-    public void handleDeleteRequest(Path path, PrintWriter out, Map<Integer, JSONObject> items) {
-        // handle delete request
-        File file = path.toFile();
-        String fileName = file.toString();
-        if (fileName.contains("items")) {
-            String[] parts = fileName.split("/");
+    @Override
+    public void handle(String path, String method,
+                       BufferedReader in, PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
+        File file = new File("public/" + path);
+        if (path.contains("items")) {
+            String[] parts = path.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 int id = Integer.parseInt(parts[2]);
                 if (items.containsKey(id)) {
@@ -49,11 +48,5 @@ public class DeleteClientHandler implements RouteHandler {
                 out.println("File not found");
             }
         }
-    }
-
-    @Override
-    public void handle(String path, String method,
-                       BufferedReader in, PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
-
     }
 }

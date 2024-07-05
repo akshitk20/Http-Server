@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d07794f9-5a8d-4ae3-8425-41061ecac08f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/handlers/PutClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/PutClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/DeleteClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/DeleteClientHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,12 +99,12 @@
           <line>41</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/handlers/GetClientHandler.java</url>
           <line>59</line>
           <option name="timeStamp" value="43" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/ClientHandler.java</url>
           <line>38</line>
           <option name="timeStamp" value="44" />
