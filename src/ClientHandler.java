@@ -39,6 +39,10 @@ public class ClientHandler implements Runnable {
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
             if (routeHandler != null) {
                 routeHandler.handle(path, method, reader, out, items);
+            } else if (path.contains("download")) {
+                BufferedOutputStream outputStream = new BufferedOutputStream(clientSocket.getOutputStream());
+                PostClientHandler postClientHandler = new PostClientHandler();
+                postClientHandler.downloadFile(path, out, outputStream);
             } else {
                 sendNotSupportedMethod(out);
             }
@@ -84,10 +88,11 @@ public class ClientHandler implements Runnable {
         // Define Routes
         addRoute("GET", "/", new GetClientHandler());
         addRoute("GET", "/items/{id}", new GetClientHandler());
+        addRoute("GET","/form.html", new GetClientHandler());
         addRoute("POST", "/submit", new PostClientHandler());
         addRoute("POST", "/items", new PostClientHandler());
         addRoute("POST", "/upload", new PostClientHandler());
-        addRoute("POST", "/download", new PostClientHandler());
+        //addRoute("POST", "/download?filename=test.txt", new PostClientHandler());
         addRoute("PUT", "/testfile.txt", new PutClientHandler());
         addRoute("PUT","/items/{id}", new PutClientHandler());
         addRoute("DELETE","/testfile.txt", new DeleteClientHandler());

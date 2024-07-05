@@ -12,69 +12,73 @@ import java.util.Objects;
 
 public class PostClientHandler implements RouteHandler {
 
-    public void handlePostRequest(String path, BufferedReader reader, PrintWriter out, Map<Integer, JSONObject> items) throws IOException {
-        try {
-            if (path.contains("items")) {
-                // handling post request for /items by sending a json response
-                String line;
-                int contentLength = 0;
-                while (!(line = reader.readLine()).isEmpty()) {
-                    if (line.startsWith("Content-Length:")) {
-                        contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
-                    }
+    @Override
+    public void handle(String path, String method,
+                       BufferedReader reader, PrintWriter out,
+                       Map<Integer, JSONObject> items) throws IOException {
+
+        if (path.contains("submit")) {
+            // Parsing form data to return the result of a form submitted
+            String line;
+            int contentLength = 0;
+            // Read and discard the request headers
+            while (!(line = reader.readLine()).isEmpty()) {
+                if (line.startsWith("Content-Length:")) {
+                    contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
                 }
-                // Read the body
-                char[] charArray = new char[contentLength];
-                reader.read(charArray);
-                String body = new String(charArray);
-
-                JSONObject item = new JSONObject(body);
-                int id = items.size() + 1;
-                item.put("id", id);
-                items.put(id, item);
-
-                out.println("HTTP/1.1 201 created");
-                out.println("Content-Type: application/json");
-                out.println();
-                out.println(item);
-            } else {
-                // Parsing form data to return the result of a form submitted
-                String line;
-                int contentLength = 0;
-                // Read and discard the request headers
-                while (!(line = reader.readLine()).isEmpty()) {
-                    if (line.startsWith("Content-Length:")) {
-                        contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
-                    }
-                }
-
-                // Read the body
-                char[] charArray = new char[contentLength];
-                reader.read(charArray);
-                String body = new String(charArray);
-                System.out.println("Post payload " + body);
-
-                // Parse form data
-                Map<String, String> formData = parseFormData(body);
-
-                // Send Response to client
-                System.out.println("Post payload with body " + formData);
-                String responseMessage = "Received POST data " + formData;
-                out.println("HTTP/1.1 200 OK");
-                out.println("Content-Type: text/html");
-                out.println();
-                out.println("<h1>Form Submission Successful</h1>");
-                out.println("<p>" + responseMessage + "</p>");
-                out.flush();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            out.println("HTTP/1.1 500 Internal Server Error");
+
+            // Read the body
+            char[] charArray = new char[contentLength];
+            reader.read(charArray);
+            String body = new String(charArray);
+            System.out.println("Post payload " + body);
+
+            // Parse form data
+            Map<String, String> formData = parseFormData(body);
+
+            // Send Response to client
+            System.out.println("Post payload with body " + formData);
+            String responseMessage = "Received POST data " + formData;
+            out.println("HTTP/1.1 200 OK");
+            out.println("Content-Type: text/html");
             out.println();
-            out.println(e.getMessage());
+            out.println("<h1>Form Submission Successful</h1>");
+            out.println("<p>" + responseMessage + "</p>");
+            out.flush();
+        } else if (path.contains("items")) {
+            // handling post request for /items by sending a json response
+            String line;
+            int contentLength = 0;
+            while (!(line = reader.readLine()).isEmpty()) {
+                if (line.startsWith("Content-Length:")) {
+                    contentLength = Integer.parseInt(line.substring("Content-Length:".length()).trim());
+                }
+            }
+            // Read the body
+            char[] charArray = new char[contentLength];
+            reader.read(charArray);
+            String body = new String(charArray);
+
+            JSONObject item = new JSONObject(body);
+            int id = items.size() + 1;
+            item.put("id", id);
+            items.put(id, item);
+
+            out.println("HTTP/1.1 201 created");
+            out.println("Content-Type: application/json");
+            out.println();
+            out.println(item);
+        } else if (path.contains("upload")) {
+            uploadFile(reader, out);
+        } else {
+            out.println("HTTP/1.1 404 Not Found");
+            out.println("Content-Type: text/html");
+            out.println();
+            out.println("<h1>404 Path not found</h1>");
+            out.flush();
         }
     }
-
 
     public void uploadFile(BufferedReader reader, PrintWriter out) {
         try {
@@ -144,11 +148,5 @@ public class PostClientHandler implements RouteHandler {
             }
         }
         return formData;
-    }
-
-    @Override
-    public void handle(String path, String method,
-                       BufferedReader in, PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
-
     }
 }
