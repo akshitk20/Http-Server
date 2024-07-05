@@ -8,3 +8,4 @@
    Build a RESTful API with endpoints to handle different resources.
    Implement JSON parsing and response generation.
    sample endpoint used is /items
+5)  Dynamic Routing for all CRUD endpoints
