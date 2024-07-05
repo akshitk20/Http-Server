@@ -7,14 +7,15 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public class PutClientHandler implements RouteHandler {
-    public void handlePutRequest(BufferedReader reader, PrintWriter out, Path path,
-                                 Map<Integer, JSONObject> items) {
+    @Override
+    public void handle(String path, String method,
+                       BufferedReader reader, PrintWriter out,
+                       Map<Integer, JSONObject> items) throws IOException {
         // handle put handling
         System.out.println("Starting PUT method");
-        File file = path.toFile();
-        if (path.toFile().toString().contains("/items")) {
-            String filePath = path.toFile().toString();
-            String[] parts = filePath.split("/");
+        File file = new File("public/" + path);
+        if (path.contains("/items")) {
+            String[] parts = path.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 try {
                     int id = Integer.parseInt(parts[2]);
@@ -85,11 +86,5 @@ public class PutClientHandler implements RouteHandler {
                 out.println("Failed to update resource.");
             }
         }
-    }
-
-    @Override
-    public void handle(String path, String method,
-                       BufferedReader in, PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
-
     }
 }
