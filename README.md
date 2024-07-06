@@ -9,3 +9,5 @@
    Implement JSON parsing and response generation.
    sample endpoint used is /items
 5)  Dynamic Routing for all CRUD endpoints
+6) Authentication and Authorization
+   Implement basic authentication to restrict access to certain endpoints. You can use a simple username and password mechanism.
