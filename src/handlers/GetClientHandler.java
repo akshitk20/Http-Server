@@ -85,14 +85,14 @@ public class GetClientHandler implements RouteHandler {
                 content.append(line).append("\n");
             }
             reader.close();
-            StringBuilder dynamicContent = new StringBuilder("<h1> Welcome to Dynamic HTTP Server </h1>");
+            StringBuilder dynamicContent = new StringBuilder("<center><h1> Welcome to Dynamic HTTP Server </h1></center>");
             dynamicContent.append("\n");
-            dynamicContent.append("\t\t").append("<p>This is the home page.</p>").append("\n");
-            dynamicContent.append("\t\t").append("<p>Current Time: ").append(LocalDateTime.now()).append("</p>");
+            dynamicContent.append("\t\t").append("<center><p>This is the home page.</p></center>").append("\n");
+            dynamicContent.append("\t\t").append("<center><p>Current Time: ").append(LocalDateTime.now()).append("</p></center>");
             dynamicContent.append("\n");
-            dynamicContent.append("\t\t").append("<p> Requested Path: ").append(templatePath).append("</p>");
+            dynamicContent.append("\t\t").append("<center><p> Requested Path: ").append(templatePath).append("</p></center>");
             dynamicContent.append("\n");
-            dynamicContent.append("\t\t").append("<a href=\"form.html\">Go to Form</a>");
+            dynamicContent.append("\t\t").append("<center><a href=\"form.html\">Go to Form</a></center>");
             String formattedHtmlContent = content.toString().replace(" {{dynamic_content}}", dynamicContent);
 
             // Format the HTML content with current time and requested path
