@@ -16,3 +16,11 @@ curl -X PUT -H "Content-Type: application/json" -d '{"name":"Updated Item1","des
 curl -v -X DELETE http://localhost:8080/testfile.txt
 
 curl -X DELETE http://localhost:8080/items/1
+
+curl --location 'http://localhost:8080/items/1' \ --header 'Authorization: Basic YWRtaW46cGFzc3dvcmQ='
+
+curl --location 'http://localhost:8080/items' \ --header 'Content-Type: application/json' \
+--data '{
+    "name": "Item1",
+    "description": "This is item 1"
+}'

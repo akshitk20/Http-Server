@@ -31,9 +31,25 @@ public class ClientHandler implements Runnable {
             String method = requestParts[0];
             String path = requestParts[1];
 
+            // Read headers
+            String authHeaders = null;
+            while (!(input = reader.readLine()).isEmpty()) {
+                if (input.startsWith("Authorization: ")) {
+                    authHeaders = input.substring("Authorization".length() + 1).trim();
+                    break;
+                }
+            }
+
             // handle the request based method and path
             RouteHandler routeHandler = findRouteHandler(method, path);
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
+
+            // Check for basic authentication
+            if (!isAuthenticated(authHeaders)) {
+                sendUnAuthorizedResponse(out);
+                return;
+            }
+
             if (routeHandler != null) {
                 routeHandler.handle(path, method, reader, out, items);
             } else if (path.contains("download")) {
@@ -48,6 +64,7 @@ public class ClientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
+
     public static void initializeRoutes() {
         // Define Routes
         addRoute("GET", "/", new GetClientHandler());
@@ -95,5 +112,22 @@ public class ClientHandler implements Runnable {
         }
 
         return null;
+    }
+
+    private void sendUnAuthorizedResponse(PrintWriter out) {
+        out.println("HTTP/1.1 401 UNAUTHORIZED");
+        out.println("WWW-Authenticate: Basic realm=\"Restricted\"");
+        out.println("Content-Type: text/html");
+        out.println();
+        out.println("<h1>401 Unauthorized</h1>");
+    }
+
+    private boolean isAuthenticated(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Basic ")) {
+            return false;
+        }
+
+        String encodedCredentials = authHeader.substring("Basic ".length()).trim();
+        return AuthUtils.isValidCredentials(encodedCredentials);
     }
 }
