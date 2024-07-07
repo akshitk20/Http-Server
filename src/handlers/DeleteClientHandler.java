@@ -6,12 +6,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.Map;
 
 public class DeleteClientHandler implements RouteHandler {
     @Override
     public void handle(String path, String method,
-                       BufferedReader in, PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
+                       BufferedReader in, PrintWriter out, Connection connection) throws IOException {
         File file = new File("public/" + path);
         if (path.contains("items")) {
             String[] parts = path.split("/");

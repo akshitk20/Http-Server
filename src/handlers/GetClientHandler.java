@@ -3,6 +3,7 @@ package handlers;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class GetClientHandler implements RouteHandler {
 
     @Override
     public void handle(String path, String method, BufferedReader in,
-                       PrintWriter out,  Map<Integer, JSONObject> items) throws IOException {
+                       PrintWriter out, Connection connection) throws IOException {
         if ("/".equals(path)) {
             // updated GET request method to render dynamic html content
             renderTemplate("templates/index.html" , out);

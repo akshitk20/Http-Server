@@ -1,9 +1,11 @@
 import config.AuthUtils;
+import config.DatabaseConnection;
 import handlers.*;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +14,11 @@ public class ClientHandler implements Runnable {
     private static final Map<Integer, JSONObject> items = new HashMap<>();
     private static final Map<String, Map<String, RouteHandler>> routes = new HashMap<>();
 
+    private final DatabaseConnection databaseConnection;
+
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
+        this.databaseConnection = new DatabaseConnection();
     }
 
     @Override
@@ -44,6 +49,8 @@ public class ClientHandler implements Runnable {
             // handle the request based method and path
             RouteHandler routeHandler = findRouteHandler(method, path);
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
+            // get connection from database
+            Connection connection = databaseConnection.getConnection();
 
             // Check for basic authentication
             if (!isAuthenticated(authHeaders)) {
@@ -52,7 +59,7 @@ public class ClientHandler implements Runnable {
             }
 
             if (routeHandler != null) {
-                routeHandler.handle(path, method, reader, out, items);
+                routeHandler.handle(path, method, reader, out, connection);
             } else if (path.contains("download")) {
                 BufferedOutputStream outputStream = new BufferedOutputStream(clientSocket.getOutputStream());
                 PostClientHandler postClientHandler = new PostClientHandler();

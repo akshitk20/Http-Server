@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class PostClientHandler implements RouteHandler {
     @Override
     public void handle(String path, String method,
                        BufferedReader reader, PrintWriter out,
-                       Map<Integer, JSONObject> items) throws IOException {
+                       Connection connection) throws IOException {
 
         if (path.contains("submit")) {
             // Parsing form data to return the result of a form submitted

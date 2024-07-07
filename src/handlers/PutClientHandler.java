@@ -4,13 +4,14 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.sql.Connection;
 import java.util.Map;
 
 public class PutClientHandler implements RouteHandler {
     @Override
     public void handle(String path, String method,
                        BufferedReader reader, PrintWriter out,
-                       Map<Integer, JSONObject> items) throws IOException {
+                       Connection connection) throws IOException {
         // handle put handling
         System.out.println("Starting PUT method");
         File file = new File("public/" + path);
