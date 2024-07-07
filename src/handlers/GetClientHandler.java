@@ -4,6 +4,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -45,15 +48,35 @@ public class GetClientHandler implements RouteHandler {
             String[] parts = path.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 int id = Integer.parseInt(parts[2]);
-                JSONObject item = items.get(id);
-                if (item != null) {
-                    out.println("HTTP/1.1 200 OK");
-                    out.println("Content-Type: application/json");
-                    out.println();
-                    out.println(item);
-                } else {
-                    out.println("HTTP/1.1 404 NOT FOUND");
-                    out.println();
+                String sql = "select * from items where id = ?";
+                try {
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setInt(1, id);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    if (resultSet.next()) {
+                        String name = resultSet.getString("name");
+                        String description = resultSet.getString("description");
+
+                        // construct json response
+                        StringBuilder jsonResponse = new StringBuilder();
+                        jsonResponse.append("{");
+                        jsonResponse.append("\"id\": ").append(id).append(",");
+                        jsonResponse.append("\"name\": \"").append(name).append("\",");
+                        jsonResponse.append("\"description\": ").append(description);
+                        jsonResponse.append("}");
+
+                        // send response
+                        out.println("HTTP/1.1 200 OK");
+                        out.println("Content-Type: application/json");
+                        out.println("Content-Length: " + jsonResponse.length());
+                        out.println();
+                        out.println(jsonResponse);
+                    } else {
+                        out.println("HTTP/1.1 404 NOT FOUND");
+                        out.println();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         } else {
