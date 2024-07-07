@@ -7,6 +7,8 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -62,14 +64,24 @@ public class PostClientHandler implements RouteHandler {
             String body = new String(charArray);
 
             JSONObject item = new JSONObject(body);
-            int id = items.size() + 1;
-            item.put("id", id);
-            items.put(id, item);
+            String name = item.getString("name");
+            String description = item.getString("description");
 
-            out.println("HTTP/1.1 201 created");
-            out.println("Content-Type: application/json");
-            out.println();
-            out.println(item);
+            String sql = "insert into items(name, description) values (?, ?)";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, description);
+                int rows = preparedStatement.executeUpdate();
+                if (rows > 0) {
+                    out.println("HTTP/1.1 201 created");
+                    out.println("Content-Type: application/json");
+                    out.println();
+                    out.println(item);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } else if (path.contains("upload")) {
             uploadFile(reader, out);
         } else {
