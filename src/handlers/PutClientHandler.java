@@ -3,9 +3,8 @@ package handlers;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.sql.Connection;
-import java.util.Map;
+import java.sql.PreparedStatement;
 
 public class PutClientHandler implements RouteHandler {
     @Override
@@ -20,23 +19,27 @@ public class PutClientHandler implements RouteHandler {
             if (parts.length == 3 && "items".equals(parts[1])) {
                 try {
                     int id = Integer.parseInt(parts[2]);
-                    JSONObject item = items.get(id);
-                    if (item != null) {
-                        int contentLength = 0;
-                        String line;
-                        while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                            if (line.startsWith("Content-Length")) {
-                                System.out.println("ignoring this " + line);
-                                contentLength = Integer.parseInt(line.split(": ")[1]);
-                            }
+                    int contentLength = 0;
+                    String line;
+                    while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                        if (line.startsWith("Content-Length")) {
+                            System.out.println("ignoring this " + line);
+                            contentLength = Integer.parseInt(line.split(": ")[1]);
                         }
-                        // Read the request body
-                        char[] bodyChars = new char[contentLength];
-                        reader.read(bodyChars, 0, contentLength);
-                        String requestBody = new String(bodyChars);
-                        System.out.println("PUT body is " + requestBody);
-                        JSONObject jsonObject = new JSONObject(requestBody);
-                        items.put(id, jsonObject);
+                    }
+                    // Read the request body
+                    char[] bodyChars = new char[contentLength];
+                    reader.read(bodyChars, 0, contentLength);
+                    String requestBody = new String(bodyChars);
+                    System.out.println("PUT body is " + requestBody);
+                    JSONObject jsonObject = new JSONObject(requestBody);
+                    String sql = "update item set name = ?, description = ? where id = ?";
+                    PreparedStatement statement = connection.prepareStatement(sql);
+                    statement.setString(1, jsonObject.getString("name"));
+                    statement.setString(2, jsonObject.getString("description"));
+                    statement.setInt(3, id);
+                    int rows = statement.executeUpdate();
+                    if (rows > 0) {
                         out.println("HTTP/1.1 200 OK");
                         out.println("Content-Type: application/json");
                         out.println();

@@ -67,7 +67,7 @@ public class PostClientHandler implements RouteHandler {
             String name = item.getString("name");
             String description = item.getString("description");
 
-            String sql = "insert into items(name, description) values (?, ?)";
+            String sql = "insert into item(name, description) values (?, ?)";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, name);

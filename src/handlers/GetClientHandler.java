@@ -8,9 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Map;
-
-import org.json.JSONObject;
 
 public class GetClientHandler implements RouteHandler {
     // simple get request method that serves the index.html file
@@ -48,10 +45,10 @@ public class GetClientHandler implements RouteHandler {
             String[] parts = path.split("/");
             if (parts.length == 3 && "items".equals(parts[1])) {
                 int id = Integer.parseInt(parts[2]);
-                String sql = "select * from items where id = ?";
+                String sql = "select * from item where id = ?";
                 try {
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                    preparedStatement.setInt(1, id);
+                    preparedStatement.setInt(0, id);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
                         String name = resultSet.getString("name");
