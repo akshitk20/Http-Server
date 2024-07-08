@@ -6,3 +6,11 @@ Jul 08, 2024 9:07:45 PM handlers.GetClientHandler handle
 INFO: GET request handled successfully
 Jul 08, 2024 9:07:45 PM ClientHandler run
 INFO: Handled request: Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+Jul 08, 2024 9:09:21 PM ClientHandler run
+INFO: Request received GET /items/1 HTTP/1.1
+Jul 08, 2024 9:09:21 PM handlers.GetClientHandler handle
+INFO: Handling GET request
+Jul 08, 2024 9:09:21 PM handlers.GetClientHandler handle
+INFO: GET request handled successfully
+Jul 08, 2024 9:09:21 PM ClientHandler run
+INFO: Handled request: Authorization: Basic YWRtaW46cGFzc3dvcmQ=

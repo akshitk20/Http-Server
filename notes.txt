@@ -46,7 +46,7 @@ Implement basic authentication to restrict access to certain endpoints. You can 
 Enable HTTPS to secure communication between the client and the server. You can use self-signed certificates for development purposes.
 
 6. Logging:
-Implement request and error logging to track server activity.
+Implement request and error logging to track server activity. Store logs in server.log file
 
 7. Rate Limiting
 Implement rate limiting to prevent abuse and ensure fair usage of your server. Limit the number of requests from a single IP address within a specific time period.
