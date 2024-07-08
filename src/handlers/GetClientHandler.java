@@ -48,7 +48,7 @@ public class GetClientHandler implements RouteHandler {
                 String sql = "select * from item where id = ?";
                 try {
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                    preparedStatement.setInt(0, id);
+                    preparedStatement.setInt(1, id);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
                         String name = resultSet.getString("name");
