@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d07794f9-5a8d-4ae3-8425-41061ecac08f" name="Changes" comment="" />
+    <list default="true" id="d07794f9-5a8d-4ae3-8425-41061ecac08f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/config/LoggingConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HttpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HttpServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/GetClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/GetClientHandler.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -100,17 +105,17 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/handlers/GetClientHandler.java</url>
-          <line>80</line>
+          <line>85</line>
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/ClientHandler.java</url>
-          <line>62</line>
+          <line>64</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/ClientHandler.java</url>
-          <line>133</line>
+          <line>137</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>

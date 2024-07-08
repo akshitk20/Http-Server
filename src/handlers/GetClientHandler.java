@@ -8,10 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 public class GetClientHandler implements RouteHandler {
+    private static final Logger logger = Logger.getLogger(GetClientHandler.class.getName());
+
     // simple get request method that serves the index.html file
     public void serveFile(PrintWriter out, BufferedOutputStream outputStream, Path filePath) throws IOException {
+        logger.info("Handling GET request");
         if (Files.exists(filePath)) {
             byte[] fileData = Files.readAllBytes(filePath);
             String contentType = Files.probeContentType(filePath);
@@ -37,6 +41,7 @@ public class GetClientHandler implements RouteHandler {
     @Override
     public void handle(String path, String method, BufferedReader in,
                        PrintWriter out, Connection connection) throws IOException {
+        logger.info("Handling GET request");
         if ("/".equals(path)) {
             // updated GET request method to render dynamic html content
             renderTemplate("templates/index.html" , out);
@@ -95,6 +100,7 @@ public class GetClientHandler implements RouteHandler {
                 out.println();
             }
         }
+        logger.info("GET request handled successfully");
     }
 
     private void renderTemplate(String templatePath,  PrintWriter out) {

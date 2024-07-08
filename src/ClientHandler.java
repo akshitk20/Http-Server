@@ -1,20 +1,22 @@
 import config.AuthUtils;
 import config.DatabaseConnection;
 import handlers.*;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
-    private static final Map<Integer, JSONObject> items = new HashMap<>();
     private static final Map<String, Map<String, RouteHandler>> routes = new HashMap<>();
 
     private final DatabaseConnection databaseConnection;
+
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -30,8 +32,8 @@ public class ClientHandler implements Runnable {
             if (null == input || input.isEmpty()) {
                 return;
             }
-
-            System.out.println("Request received " + input);
+            logger.info("Request received " + input);
+            //System.out.println("Request received " + input);
             // parse input
             String[] requestParts = input.split(" ");
             String method = requestParts[0];
@@ -67,8 +69,10 @@ public class ClientHandler implements Runnable {
             } else {
                 sendNotSupportedMethod(out);
             }
-            System.out.println("Handled request: " + input);
+            //System.out.println("Handled request: " + input);
+            logger.info("Handled request: " + input);
         } catch (IOException e) {
+            logger.log(Level.SEVERE, "Client Handler Exception", e);
             throw new RuntimeException(e);
         }
     }

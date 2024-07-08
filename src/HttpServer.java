@@ -1,3 +1,5 @@
+import config.LoggingConfig;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,6 +13,7 @@ public class HttpServer {
 
     public void start() {
         ClientHandler.initializeRoutes();
+        LoggingConfig.configureLogger();
         try(ServerSocket socket = new ServerSocket(port)) {
             System.out.println("Listening for connection on port " + port);
             while (true) {

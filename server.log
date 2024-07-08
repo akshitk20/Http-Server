@@ -1,0 +1,8 @@
+Jul 08, 2024 9:07:44 PM ClientHandler run
+INFO: Request received GET /items/2 HTTP/1.1
+Jul 08, 2024 9:07:45 PM handlers.GetClientHandler handle
+INFO: Handling GET request
+Jul 08, 2024 9:07:45 PM handlers.GetClientHandler handle
+INFO: GET request handled successfully
+Jul 08, 2024 9:07:45 PM ClientHandler run
+INFO: Handled request: Authorization: Basic YWRtaW46cGFzc3dvcmQ=
