@@ -20,7 +20,7 @@
 
 ## For Running the application
 make sure you have java installed in your system.
-1) git clone <url>.
+1) git clone url.
 2) open the project in intellij or any other IDE.
 3) run the project.
 4) go to localhost:8080 on the browser to see the welcome page.
