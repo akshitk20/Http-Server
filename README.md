@@ -13,4 +13,6 @@
    Implemented basic authentication to restrict access to certain endpoints. You can use a simple username and password mechanism.
 7) Database Integration:
    Connected server to a database (PostgreSQL) to handle data storage and retrieval.
-   Implemented CRUD operations for database entities. 
+   Implemented CRUD operations for database entities.
+8) Logging:
+   Implemented request and error logging to track server activity. Store logs in server.log file
