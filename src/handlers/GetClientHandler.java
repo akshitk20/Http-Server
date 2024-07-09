@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GetClientHandler implements RouteHandler {
@@ -104,7 +105,7 @@ public class GetClientHandler implements RouteHandler {
     }
 
     private void renderTemplate(String templatePath,  PrintWriter out) {
-        System.out.println("starting enhanced get method");
+        logger.info("starting enhanced get method");
         try (BufferedReader reader  = new BufferedReader(new FileReader(templatePath))) {
             StringBuilder content = new StringBuilder();
             String line;
@@ -132,6 +133,7 @@ public class GetClientHandler implements RouteHandler {
             out.println(formattedHtmlContent);
             out.flush();
         } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             e.printStackTrace();
         }
     }

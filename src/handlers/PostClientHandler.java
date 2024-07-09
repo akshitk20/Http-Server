@@ -12,15 +12,19 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PostClientHandler implements RouteHandler {
+    private static final Logger logger = Logger.getLogger(PostClientHandler.class.getName());
 
     @Override
     public void handle(String path, String method,
                        BufferedReader reader, PrintWriter out,
                        Connection connection) throws IOException {
-
+        logger.info("Handling POST request");
         if (path.contains("submit")) {
+            logger.info("Handling submit request");
             // Parsing form data to return the result of a form submitted
             String line;
             int contentLength = 0;
@@ -41,7 +45,7 @@ public class PostClientHandler implements RouteHandler {
             Map<String, String> formData = parseFormData(body);
 
             // Send Response to client
-            System.out.println("Post payload with body " + formData);
+            logger.info("Post payload with body " + formData);
             String responseMessage = "Received POST data " + formData;
             out.println("HTTP/1.1 200 OK");
             out.println("Content-Type: text/html");
@@ -50,6 +54,7 @@ public class PostClientHandler implements RouteHandler {
             out.println("<p>" + responseMessage + "</p>");
             out.flush();
         } else if (path.contains("items")) {
+            logger.info("Handling items request");
             // handling post request for /items by sending a json response
             String line;
             int contentLength = 0;
@@ -80,7 +85,7 @@ public class PostClientHandler implements RouteHandler {
                     out.println(item);
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         } else if (path.contains("upload")) {
             uploadFile(reader, out);
@@ -94,6 +99,7 @@ public class PostClientHandler implements RouteHandler {
     }
 
     public void uploadFile(BufferedReader reader, PrintWriter out) {
+        logger.info("starting file upload");
         try {
             String line;
             String fileName = null;
@@ -117,11 +123,13 @@ public class PostClientHandler implements RouteHandler {
                 out.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
+        logger.info("file upload completed");
     }
 
     public void downloadFile(String requestedFile, PrintWriter out, BufferedOutputStream outputStream) {
+        logger.info("starting file download");
         String fileName = requestedFile.split("filename=")[1];
         File file = new File("uploads", fileName);
         if (file.exists()) {
@@ -139,8 +147,9 @@ public class PostClientHandler implements RouteHandler {
                 // Write the file content
                 outputStream.write(fileBytes);
                 outputStream.flush();
+                logger.info("file download completed");
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         } else {
             out.println("HTTP/1.1 404 Not Found");
@@ -148,6 +157,7 @@ public class PostClientHandler implements RouteHandler {
             out.println();
             out.println("File not found");
             out.flush();
+            logger.info("File download failed");
         }
     }
     private Map<String, String> parseFormData(String body) {
